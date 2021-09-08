@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+body{
+  background-color: rgb(34, 40, 49);
+}
+
+.papelera_roja{
+  color: #f05454;
+}
+
+.papelera_amarilla{
+  color: #fed049;
+}
+
+.manito tr{
+  cursor: pointer;
+}

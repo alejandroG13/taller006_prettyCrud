@@ -1,0 +1,9 @@
+.table-hover tbody tr:hover {
+  color: floralwhite;
+  background-color: rgb(48, 71, 94);
+}
+
+.img-thumbnail {
+  background-color: rgb(48, 71, 94);
+  border: none;
+}

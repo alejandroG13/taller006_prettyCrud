@@ -1,0 +1,149 @@
+<div class="container">
+  <div class="row border mt-3">
+    <div class="col-md-8">
+      <div class="list-group mt-3">
+        <span class="text-light">Listado de Aignaturas Matriculadas</span>
+
+        <table class="table table-hover text-light manito">
+          <thead>
+            <tr>
+              <th style="width: 5%">#</th>
+              <th style="width: 35%">Nombre Asignatura</th>
+              <th style="width: 35%">Nombre Profesor</th>
+              <th style="width: 10%">&nbsp;</th>
+              <th style="width: 15%">Foto</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr
+              *ngFor="let objAsignatura of asignaturaArreglo"
+              (click)="seleccionar(objAsignatura)"
+              [class.active]="objAsignatura == asignaturaSeleccionada"
+            >
+              <td>{{ objAsignatura.id_asig }}</td>
+              <td>{{ objAsignatura.nombre }}</td>
+              <td>{{ objAsignatura.profesor }}</td>
+              <td>
+                <i
+                  class="far fa-trash-alt papelera_roja"
+                  (click)="abrirModal(modalEliminarConfirmar, objAsignatura)"
+                ></i>
+                &nbsp;
+                <i
+                  class="fas fa-recycle papelera_amarilla"
+                  (click)="procesarAsignatura()"
+                >
+                  <span *ngIf="asignaturaSeleccionada.id_asig != 0"></span
+                ></i>
+              </td>
+              <td>
+                <img
+                  [src]="objAsignatura.fotoBase64"
+                  alt="Foto refundida"
+                  style="height: 50px; width: 50px"
+                  onerror="this.src='../../assets/img/no-image.png';"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="col-md-4 mt-3 text-light">
+      <form>
+        <div class="form-group">
+          <label for="nombre_asign">Nombre Asignatura</label>
+          <input
+            type="text-light"
+            class="form-control"
+            id="nombre_asign"
+            name="nombre_asign"
+            [(ngModel)]="asignaturaSeleccionada.nombre"
+          />
+        </div>
+        <div class="form-group">
+          <label for="nombre-profe">Nombre Profesor</label>
+          <input
+            type="text-light"
+            class="form-control"
+            id="nombre-profe"
+            name="nombre-profe"
+            [(ngModel)]="asignaturaSeleccionada.profesor"
+          />
+        </div>
+        <div class="form-group">
+          <label for="foto_profe">Foto</label>
+          <div class="input-group-append">
+            <input
+              type="text-light"
+              class="form-control form-control-sm"
+              id="foto_profe"
+              name="foto_profe"
+              [(ngModel)]="asignaturaSeleccionada.foto_prof"
+              accept="image/x-png,image/jpeg,image/gift"
+            />
+            <button
+              type="button"
+              class="btn-info btn-sm"
+              (click)="fileInput.click()"
+            >
+              <span>+</span>
+              <input
+                type="file"
+                name="fotico"
+                style="display: none"
+                #fileInput
+                (change)="seleccionarFoto($event)"
+              />
+            </button>
+          </div>
+        </div>
+        <div class="text-right mt-3 img-thumbnail">
+          <img
+            [src]="asignaturaSeleccionada.fotoBase64"
+            alt="Foto refundida"
+            style="height: 200%; width: 100%"
+            onerror="this.src='../../assets/img/no-image.png';"
+          />
+        </div>
+        <p
+          *ngIf="
+            asignaturaSeleccionada.id_asig == 0;
+            then codigoCrear;
+            else codigoActualizar"
+        ></p>
+        <ng-template #codigoCrear>
+          <button class="btn btn-success" (click)="procesarAsignatura()">
+            Crear
+          </button>
+        </ng-template>
+        <ng-template #codigoActualizar>
+          <button class="btn btn-success">Actualizar</button>
+        </ng-template>
+        <button class="btn btn-warning" (click)="cancelar()">Cancelar</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Plantilla para ventana modal -->
+<ng-template #modalEliminarConfirmar>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{modalTitulo}}</h4>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">{{modalTexto}}<br/><strong>{{modalContenido}}</strong></div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="btnCancelarEliminar()">Cancelar</button>
+    <button type="button" class="btn btn-danger"(click)="btnEliminar()">Eliminar</button>
+  </div>
+</ng-template>
